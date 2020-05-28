@@ -5,15 +5,23 @@
       <BaseInput label="Email" v-model="email" />
       <BaseInput label="Phone" v-model="phone" />
       <BaseInput label="City" v-model="city" />
-      <BaseInput label="FU" v-model="fu" />
+      <BaseInput label="FU" maxlength="2" v-model="fu" />
 
-      <BaseSelectInput
-        v-for="question in QUESTIONS"
-        :key="question"
-        :label="question"
-        v-model="name"
-        :options="OPTIONS"
-      />
+      <ul class="categories-list" ref="categories">
+        <li
+          class="categories-list__item"
+          :data-categorie-name="categorie.name"
+          v-for="categorie in CATEGORIES"
+          :key="categorie.name"
+        >
+          <BaseSelectInput
+            v-for="(question, index) in categorie.questions"
+            :key="index + categorie.name"
+            :label="question"
+            :options="OPTIONS"
+          />
+        </li>
+      </ul>
 
       <BaseButton type="submit">Send</BaseButton>
     </form>
@@ -21,7 +29,7 @@
 </template>
 
 <script>
-import { answerOptions, questionsCategories } from '@/utils/constants'
+import { answerOptions, categories } from '@/utils/constants'
 import BaseInput from '@/components/BaseInput'
 import BaseButton from '@/components/BaseButton'
 import BaseSelectInput from '@/components/BaseSelectInput'
@@ -30,9 +38,7 @@ export default {
   components: { BaseInput, BaseButton, BaseSelectInput },
   created() {
     this.OPTIONS = Object.freeze([...answerOptions])
-    // this.QUESTIONS = Object.freeze([...questionsCategories])
-    this.QUESTIONS = Object.freeze([1, 2, 3])
-    questionsCategories
+    this.CATEGORIES = Object.freeze([...categories])
   },
   data() {
     return {
@@ -42,7 +48,7 @@ export default {
       city: '',
       fu: '',
 
-      personalityClassification: {
+      personality: {
         realistic: 0,
         investigative: 0,
         entrepreneur: 0,
@@ -53,7 +59,31 @@ export default {
     }
   },
   methods: {
-    async handleSubmit() {},
+    async handleSubmit() {
+      this.calculateResults()
+    },
+    calculateResults() {
+      const categoriesElements = Array.from(this.$refs.categories.children)
+
+      const results = categoriesElements.map(categorie => {
+        const { categorieName } = categorie.dataset
+
+        const categorieQuestions = Array.from(categorie.children)
+
+        const answers = categorieQuestions.map(question =>
+          parseInt(question.lastChild.value)
+        )
+
+        const result = answers.reduce(
+          (accumulator, currentValue) => (accumulator += currentValue)
+        )
+
+        return { categorie: categorieName, answers, result }
+      })
+
+      console.log(results)
+      return results
+    },
   },
 }
 </script>
@@ -64,7 +94,7 @@ export default {
 main {
   margin: 50px;
 
-  div + div {
+  * + * {
     margin-top: 20px;
   }
 }
