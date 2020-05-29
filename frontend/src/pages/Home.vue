@@ -10,13 +10,13 @@
       <ul class="categories-list" ref="categories">
         <li
           class="categories-list__item"
-          :data-categorie-name="categorie.name"
-          v-for="categorie in CATEGORIES"
-          :key="categorie.name"
+          v-for="category in CATEGORIES"
+          :key="category.name"
+          :data-category-name="category.name"
         >
           <BaseSelectInput
-            v-for="(question, index) in categorie.questions"
-            :key="index + categorie.name"
+            v-for="(question, index) in category.questions"
+            :key="index + category.name"
             :label="question"
             :options="OPTIONS"
           />
@@ -60,29 +60,41 @@ export default {
   },
   methods: {
     async handleSubmit() {
-      this.calculateResults()
+      const result = this.calculateResults()
+
+      this.setPersonalities(result)
     },
     calculateResults() {
-      const categoriesElements = Array.from(this.$refs.categories.children)
+      const $categories = Array.from(this.$refs.categories.children)
 
-      const results = categoriesElements.map(categorie => {
-        const { categorieName } = categorie.dataset
+      let calculatedPersonalities = {}
 
-        const categorieQuestions = Array.from(categorie.children)
+      $categories.forEach(category => {
+        const { categoryName } = category.dataset
+        const categoryQuestions = Array.from(category.children)
 
-        const answers = categorieQuestions.map(question =>
-          parseInt(question.lastChild.value)
+        const categoryAnswers = categoryQuestions.map(question =>
+          question.lastChild.value ? parseInt(question.lastChild.value) : 0
         )
 
-        const result = answers.reduce(
+        const result = categoryAnswers.reduce(
           (accumulator, currentValue) => (accumulator += currentValue)
         )
 
-        return { categorie: categorieName, answers, result }
+        calculatedPersonalities = {
+          ...calculatedPersonalities,
+          [categoryName]: result,
+        }
       })
 
-      console.log(results)
-      return results
+      return calculatedPersonalities
+    },
+    setPersonalities(propsWithResults = {}) {
+      Object.entries(propsWithResults).forEach(category => {
+        const [categoryName, categoryPercentage] = category
+
+        this.personality[categoryName] = categoryPercentage
+      })
     },
   },
 }
