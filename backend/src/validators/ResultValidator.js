@@ -5,11 +5,11 @@ export const ResultValidator = celebrate({
     id: Joi.string().required()
   }),
   [Segments.BODY]: Joi.object().keys({
-    realistic: Joi.string().required(),
-    investigative: Joi.string().required(),
-    entrepreneur: Joi.string().required(),
-    conventional: Joi.string().required(),
-    artistic: Joi.string().required(),
-    social: Joi.string().required()
+    realistic: Joi.number().required(),
+    investigative: Joi.number().required(),
+    entrepreneur: Joi.number().required(),
+    conventional: Joi.number().required(),
+    artistic: Joi.number().required(),
+    social: Joi.number().required()
   })
 })
