@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import api from '@/services/api'
+
 import { answerOptions, categories } from '@/utils/constants'
 import BaseInput from '@/components/BaseInput'
 import BaseButton from '@/components/BaseButton'
@@ -60,9 +62,24 @@ export default {
   },
   methods: {
     async handleSubmit() {
-      const result = this.calculateResults()
+      const results = this.calculateResults()
+      this.setPersonalities(results)
 
-      this.setPersonalities(result)
+      try {
+        const response = await api.post('/create-person', {
+          name: this.name,
+          email: this.email,
+          phone: this.phone,
+          city: this.city,
+          fu: this.fu,
+        })
+
+        const { id: personId } = response.data
+
+        await api.post(`/store-result/${personId}`, this.personality)
+      } catch (error) {
+        throw Error(error)
+      }
     },
     calculateResults() {
       const $categories = Array.from(this.$refs.categories.children)
