@@ -1,11 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-const SignUp = () =>
-  import(/* webpackChunkName: "sign-up" */ '@/pages/SignUp.vue')
+const SignUp = () => import(/* webpackChunkName: "sign-up" */ '@/pages/SignUp')
 
-const Survey = () =>
-  import(/* webpackChunkName: "survey" */ '@/pages/Survey.vue')
+const Survey = () => import(/* webpackChunkName: "survey" */ '@/pages/Survey')
 
 Vue.use(VueRouter)
 
@@ -16,7 +14,7 @@ const routes = [
     component: SignUp,
   },
   {
-    path: '/survey/:id',
+    path: '/survey/:userId',
     name: 'survey',
     component: Survey,
     props: true,
