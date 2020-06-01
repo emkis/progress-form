@@ -34,7 +34,7 @@ export default {
   z-index: 10;
 
   & + & {
-    margin-top: rem(25px);
+    margin-top: rem(13px);
   }
 
   &:focus {

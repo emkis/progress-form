@@ -77,7 +77,7 @@ export default {
     color: white;
     border: 2px solid transparent;
     background: $color_primary_faded;
-    transition: border 200ms ease-in;
+    transition: border 200ms ease-out;
 
     &:focus,
     &:active {
