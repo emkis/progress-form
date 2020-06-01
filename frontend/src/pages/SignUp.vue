@@ -1,47 +1,31 @@
 <template>
   <main>
-    <form @submit.prevent="handleSubmit">
-      <BaseInput label="Name" v-model="name" />
-      <BaseInput label="Email" v-model="email" />
-      <BaseInput label="Phone" v-model="phone" />
-      <BaseInput label="City" v-model="city" />
-      <BaseInput label="FU" maxlength="2" v-model="fu" />
+    <Container>
+      <Title><span>Hello there!</span> <br />Sing up to the project </Title>
 
-      <ul class="categories-list" ref="categories">
-        <li
-          class="categories-list__item"
-          v-for="category in CATEGORIES"
-          :key="category.name"
-          :data-category-name="category.name"
-        >
-          <BaseSelectInput
-            v-for="(question, index) in category.questions"
-            :key="index + category.name"
-            :label="question"
-            :options="OPTIONS"
-          />
-        </li>
-      </ul>
+      <form @submit.prevent="handleSubmit">
+        <Input label="Name" v-model.trim="name" />
+        <Input label="Email" v-model.trim="email" />
+        <Input label="Phone" v-model.trim="phone" />
+        <Input label="City" v-model.trim="city" />
+        <Input label="FU" maxlength="2" v-model.trim="fu" />
 
-      <BaseButton type="submit">Send</BaseButton>
-    </form>
+        <Button type="submit">Submit</Button>
+      </form>
+    </Container>
   </main>
 </template>
 
 <script>
 import api from '@/services/api'
 
-import { answerOptions, categories } from '@/utils/constants'
-import BaseInput from '@/components/BaseInput'
-import BaseButton from '@/components/BaseButton'
-import BaseSelectInput from '@/components/BaseSelectInput'
+import Container from '@/components/Container'
+import Title from '@/components/Title'
+import Input from '@/components/Input'
+import Button from '@/components/Button'
 
 export default {
-  components: { BaseInput, BaseButton, BaseSelectInput },
-  created() {
-    this.OPTIONS = Object.freeze([...answerOptions])
-    this.CATEGORIES = Object.freeze([...categories])
-  },
+  components: { Container, Title, Input, Button },
   data() {
     return {
       name: '',
@@ -49,22 +33,10 @@ export default {
       phone: '',
       city: '',
       fu: '',
-
-      personality: {
-        realistic: 0,
-        investigative: 0,
-        entrepreneur: 0,
-        conventional: 0,
-        artistic: 0,
-        social: 0,
-      },
     }
   },
   methods: {
     async handleSubmit() {
-      const results = this.calculateResults()
-      this.setPersonalities(results)
-
       try {
         const response = await api.post('/create-person', {
           name: this.name,
@@ -74,44 +46,15 @@ export default {
           fu: this.fu,
         })
 
-        const { id: personId } = response.data
+        const { id } = response.data
 
-        await api.post(`/store-result/${personId}`, this.personality)
+        this.$router.push({
+          name: 'survey',
+          params: { personId: id },
+        })
       } catch (error) {
         throw Error(error)
       }
-    },
-    calculateResults() {
-      const $categories = Array.from(this.$refs.categories.children)
-
-      let calculatedPersonalities = {}
-
-      $categories.forEach(category => {
-        const { categoryName } = category.dataset
-        const categoryQuestions = Array.from(category.children)
-
-        const categoryAnswers = categoryQuestions.map(question =>
-          question.lastChild.value ? parseInt(question.lastChild.value) : 0
-        )
-
-        const result = categoryAnswers.reduce(
-          (accumulator, currentValue) => (accumulator += currentValue)
-        )
-
-        calculatedPersonalities = {
-          ...calculatedPersonalities,
-          [categoryName]: result,
-        }
-      })
-
-      return calculatedPersonalities
-    },
-    setPersonalities(propsWithResults = {}) {
-      Object.entries(propsWithResults).forEach(category => {
-        const [categoryName, categoryPercentage] = category
-
-        this.personality[categoryName] = categoryPercentage
-      })
     },
   },
 }
@@ -121,10 +64,20 @@ export default {
 @import '@/styles/constants/index.scss';
 
 main {
-  margin: 50px;
+  background: $color_primary;
+  padding: rem(60px 0 80px);
+  min-height: 100%;
 
-  * + * {
-    margin-top: 20px;
+  .title {
+    margin-bottom: rem(40px);
+
+    > span {
+      font-weight: 500;
+    }
+  }
+
+  .button {
+    margin-top: rem(35px);
   }
 }
 </style>
