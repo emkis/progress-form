@@ -8,7 +8,7 @@
 @import '@/styles/constants/index.scss';
 
 .survey-question {
-  font-size: rem(24px);
+  font-size: rem(26px);
   line-height: 1.4;
   font-weight: 300;
   padding: rem(30px 0);
