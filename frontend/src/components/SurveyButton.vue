@@ -1,5 +1,10 @@
 <template>
-  <button class="survey-button" :class="{ pressed }" @click="pressed = true">
+  <button
+    class="survey-button"
+    :class="{ pressed }"
+    v-on="$listeners"
+    @click="pressed = true"
+  >
     <span class="survey-button__option"><slot name="option"/></span>
     <slot name="answer" />
   </button>
