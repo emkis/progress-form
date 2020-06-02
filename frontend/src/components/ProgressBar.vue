@@ -25,14 +25,13 @@ export default {
 
 .progress-bar {
   overflow: hidden;
-  padding: rem(15px 0);
 
   &__total {
     background: $color_primary;
   }
 
   &__percentage {
-    height: rem(6px);
+    height: rem(7px);
     background: $color_greyish_blue;
     transition: transform 200ms ease-out;
   }
