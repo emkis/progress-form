@@ -15,22 +15,28 @@
         <ProgressBar :percentage="surveyProgress" />
       </header>
 
-      <SurveyQuestion>
-        {{ QUESTIONS[currentQuestion - 1].question }}
-      </SurveyQuestion>
+      <transition name="slide" mode="out-in" appear>
+        <SurveyQuestion :key="currentQuestion">
+          {{ QUESTIONS[currentQuestion - 1].question }}
+        </SurveyQuestion>
+      </transition>
     </Container>
 
-    <div :key="currentQuestion" class="answers-container">
+    <div class="answers-container">
       <Container>
-        <SurveyButton
-          v-for="alternative in ALTERNATIVES"
-          :key="alternative.value"
-          @click="nextQuestion(alternative.value)"
-          :disabled="allQuestionsAnswered"
-        >
-          <template #option>{{ alternative.option }}</template>
-          <template #answer>{{ alternative.answer }}</template>
-        </SurveyButton>
+        <transition name="slide" mode="out-in">
+          <div :key="currentQuestion">
+            <SurveyButton
+              v-for="alternative in ALTERNATIVES"
+              :key="alternative.value"
+              @click="nextQuestion(alternative.value)"
+              :disabled="allQuestionsAnswered"
+            >
+              <template #option>{{ alternative.option }}</template>
+              <template #answer>{{ alternative.answer }}</template>
+            </SurveyButton>
+          </div>
+        </transition>
       </Container>
     </div>
   </main>
@@ -102,7 +108,7 @@ export default {
     nextQuestion(pressedAnswerValue) {
       this.setPreviousAnswer(pressedAnswerValue)
       this.sumPersonality()
-      setTimeout(() => this.setNextQuestion(), 400)
+      setTimeout(() => this.setNextQuestion(), 350)
     },
     previousQuestion() {
       this.subtractPersonality()
@@ -184,5 +190,23 @@ export default {
       transform: translateX(rem(-20px));
     }
   }
+}
+
+$duration: 300ms;
+$transition: ease-out;
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: opacity $duration $transition, transform $duration $transition;
+}
+
+.slide-enter {
+  opacity: 0;
+  transform: translateX(10%);
+}
+
+.slide-leave-to {
+  opacity: 0;
+  transform: translateX(-30%);
 }
 </style>
