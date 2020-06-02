@@ -1,13 +1,13 @@
 <template>
   <div id="app">
-    <Home />
+    <router-view />
   </div>
 </template>
 
 <script>
-import Home from '@/pages/Home'
+import fullViewportHeightMixin from '@/mixins/fullViewportHeightMixin'
 
 export default {
-  components: { Home },
+  mixins: [fullViewportHeightMixin],
 }
 </script>
