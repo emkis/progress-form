@@ -22,7 +22,8 @@
     margin-top: rem(25px);
   }
 
-  &:focus {
+  &:focus,
+  &:focus-within {
     outline: 2px solid white;
     outline-offset: 3px;
   }
