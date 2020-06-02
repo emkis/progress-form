@@ -5,6 +5,7 @@ const fullViewportHeightMixin = {
       document.documentElement.style.setProperty('--vh', `${viewportHeight}px`)
     }
 
+    handleResize()
     window.addEventListener('resize', handleResize)
   },
 }
