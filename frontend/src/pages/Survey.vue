@@ -1,31 +1,61 @@
 <template>
-  <div>
-    <h1>hi, {{ userId }}</h1>
+  <main class="survey">
+    <Container>
+      <header class="survey__header">
+        <div class="survey__header-container">
+          <button @click="previousQuestion" :disabled="!hasPreviousQuestion">
+            <IconArrowLeft size="25" color="#9C9CA3" />
+          </button>
+          <StepCounter
+            :current-step="currentQuestion"
+            :total-steps="TOTAL_STEPS"
+          />
+        </div>
 
-    <ul class="categories-list" ref="categories">
-      <li
-        class="categories-list__item"
-        v-for="category in CATEGORIES"
-        :key="category.name"
-        :data-category-name="category.name"
-      >
-        <BaseSelectInput
-          v-for="(question, index) in category.questions"
-          :key="index + category.name"
-          :label="question"
-          :options="OPTIONS"
-        />
-      </li>
-    </ul>
-  </div>
+        <ProgressBar :percentage="surveyProgress" />
+      </header>
+
+      <SurveyQuestion>
+        {{ QUESTIONS[currentQuestion - 1].question }}
+      </SurveyQuestion>
+    </Container>
+
+    <div :key="currentQuestion" class="answers-container">
+      <Container>
+        <SurveyButton
+          v-for="alternative in ALTERNATIVES"
+          :key="alternative.value"
+          @click="nextQuestion(alternative.value)"
+          :disabled="allQuestionsAnswered"
+        >
+          <template #option>{{ alternative.option }}</template>
+          <template #answer>{{ alternative.answer }}</template>
+        </SurveyButton>
+      </Container>
+    </div>
+  </main>
 </template>
 
 <script>
-import { answerOptions, categories } from '@/utils/constants'
-import BaseSelectInput from '@/components/BaseSelectInput'
+import { answerAlternatives, questions } from '@/utils/constants'
+import calculatePercentage from '@/utils/calculatePercentage'
+
+import Container from '@/components/Container'
+import ProgressBar from '@/components/ProgressBar'
+import StepCounter from '@/components/StepCounter'
+import SurveyButton from '@/components/SurveyButton'
+import SurveyQuestion from '@/components/SurveyQuestion'
+import { IconArrowLeft } from '@/components/icons'
 
 export default {
-  components: { BaseSelectInput },
+  components: {
+    Container,
+    StepCounter,
+    SurveyQuestion,
+    ProgressBar,
+    SurveyButton,
+    IconArrowLeft,
+  },
   props: {
     userId: {
       type: [Number, String],
@@ -34,6 +64,9 @@ export default {
   },
   data() {
     return {
+      currentQuestion: 1,
+      previousAnswerValue: null,
+
       personality: {
         realistic: 0,
         investigative: 0,
@@ -45,44 +78,111 @@ export default {
     }
   },
   created() {
-    this.OPTIONS = Object.freeze([...answerOptions])
-    this.CATEGORIES = Object.freeze([...categories])
+    this.ALTERNATIVES = Object.freeze([...answerAlternatives])
+
+    this.QUESTIONS = [...questions]
+    this.TOTAL_STEPS = this.QUESTIONS.length
   },
   methods: {
-    calculateResults() {
-      const $categories = Array.from(this.$refs.categories.children)
-
-      let calculatedPersonalities = {}
-
-      $categories.forEach(category => {
-        const { categoryName } = category.dataset
-        const categoryQuestions = Array.from(category.children)
-
-        const categoryAnswers = categoryQuestions.map(question =>
-          question.lastChild.value ? parseInt(question.lastChild.value) : 0
-        )
-
-        const result = categoryAnswers.reduce(
-          (accumulator, currentValue) => (accumulator += currentValue)
-        )
-
-        calculatedPersonalities = {
-          ...calculatedPersonalities,
-          [categoryName]: result,
-        }
-      })
-
-      return calculatedPersonalities
+    setNextQuestion() {
+      this.currentQuestion = this.currentQuestion + 1
     },
-    setPersonalities(propsWithResults = {}) {
-      Object.entries(propsWithResults).forEach(category => {
-        const [categoryName, categoryPercentage] = category
-
-        this.personality[categoryName] = categoryPercentage
-      })
+    setPreviousQuestion() {
+      this.currentQuestion = this.currentQuestion - 1
+    },
+    setPreviousAnswer(pressedAnswerValue) {
+      this.previousAnswerValue = pressedAnswerValue
+    },
+    sumPersonality() {
+      this.personality[this.currentPersonality] += this.previousAnswerValue
+    },
+    subtractPersonality() {
+      this.personality[this.currentPersonality] -= this.previousAnswerValue
+    },
+    nextQuestion(pressedAnswerValue) {
+      this.setPreviousAnswer(pressedAnswerValue)
+      this.sumPersonality()
+      setTimeout(() => this.setNextQuestion(), 400)
+    },
+    previousQuestion() {
+      this.subtractPersonality()
+      this.setPreviousQuestion()
+    },
+  },
+  computed: {
+    currentPersonality() {
+      return this.QUESTIONS[this.currentQuestion - 1].type
+    },
+    hasPreviousQuestion() {
+      return this.currentQuestion > 1
+    },
+    surveyProgress() {
+      return calculatePercentage(this.currentQuestion, this.TOTAL_STEPS)
+    },
+    allQuestionsAnswered() {
+      return this.currentQuestion - 1 === this.TOTAL_STEPS
     },
   },
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import '@/styles/constants/index.scss';
+
+.survey {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .answers-container {
+    flex: 1 0 60%;
+    padding: rem(50px 0);
+    background: $color_primary;
+  }
+
+  &__header {
+    padding-top: rem(25px);
+
+    &-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    button {
+      border: 0;
+      padding: 0;
+      box-shadow: none;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: rem(40px);
+      width: rem(40px);
+      transition: background 200ms ease-out, opacity 200ms ease-out;
+      cursor: pointer;
+      z-index: 1;
+
+      &:focus,
+      &:focus-within {
+        outline: none;
+      }
+
+      &:active {
+        background: rgba($color_gray, 0.3);
+      }
+
+      &:disabled {
+        opacity: 0;
+      }
+    }
+
+    .step-counter {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      transform: translateX(rem(-20px));
+    }
+  }
+}
+</style>
