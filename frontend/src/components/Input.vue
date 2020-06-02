@@ -47,7 +47,7 @@ export default {
 
   &__label {
     display: block;
-    font-size: rem(18px);
+    font-size: rem(16px);
     line-height: 1.5;
     font-weight: 500;
     margin-bottom: rem(6px);
@@ -71,8 +71,8 @@ export default {
 
   &__action {
     width: 100%;
-    min-height: rem(60px);
-    padding: rem(18px 20px);
+    min-height: rem(55px);
+    padding: rem(0 20px);
     box-shadow: none;
     color: white;
     border: 2px solid transparent;
@@ -83,6 +83,16 @@ export default {
     &:active {
       outline: none;
       border-color: white;
+    }
+  }
+
+  @media (min-width: 768px) {
+    &__label {
+      font-size: rem(18px);
+    }
+
+    &__action {
+      min-height: rem(60px);
     }
   }
 }
