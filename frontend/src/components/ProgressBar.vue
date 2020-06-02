@@ -33,7 +33,7 @@ export default {
 
   &__percentage {
     height: rem(6px);
-    background: $color_blue_gray;
+    background: $color_greyish_blue;
     transition: transform 200ms ease-out;
   }
 }
