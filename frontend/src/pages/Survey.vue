@@ -29,7 +29,7 @@
             <SurveyButton
               v-for="alternative in ALTERNATIVES"
               :key="alternative.value"
-              @click="nextQuestion(alternative.value)"
+              @click.once="nextQuestion(alternative.value)"
               :disabled="allQuestionsAnswered"
             >
               <template #option>{{ alternative.option }}</template>
@@ -147,12 +147,13 @@ export default {
   }
 
   &__header {
-    padding-top: rem(25px);
+    padding-top: rem(30px);
 
     &-container {
       display: flex;
       justify-content: center;
       align-items: center;
+      padding-bottom: rem(25px);
     }
 
     button {
