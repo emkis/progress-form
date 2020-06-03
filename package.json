@@ -6,10 +6,5 @@
   "license": "MIT",
   "engines": {
     "node": "12.16.1"
-  },
-  "scripts": {
-    "install-backend": "cd backend && npm install",
-    "build-backend": "cd backend && npm run build && npm run start",
-    "heroku-prebuild": "npm run install-backend && npm run build-backend"
   }
 }
