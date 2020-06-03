@@ -4,13 +4,16 @@
       <Title><span>Hello there!</span> <br />Sing up to the project </Title>
 
       <form @submit.prevent="handleSubmit">
-        <Input label="Name" v-model.trim="name" />
-        <Input label="Email" v-model.trim="email" />
-        <Input label="Phone" v-model.trim="phone" />
-        <Input label="City" v-model.trim="city" />
-        <Input label="FU" maxlength="2" v-model.trim="fu" />
+        <Input label="Name" v-model.trim="name" required />
+        <Input label="Email" v-model.trim="email" required />
+        <Input label="Phone" v-model.trim="phone" required />
+        <Input label="City" v-model.trim="city" required />
+        <Input label="FU" maxlength="2" v-model.trim="fu" required />
 
-        <Button type="submit">Submit</Button>
+        <Button type="submit">
+          <Loader v-if="isLoading" />
+          <template v-else>Submit</template>
+        </Button>
       </form>
     </Container>
   </main>
@@ -23,11 +26,14 @@ import Container from '@/components/Container'
 import Title from '@/components/Title'
 import Input from '@/components/Input'
 import Button from '@/components/Button'
+import Loader from '@/components/Loader'
 
 export default {
-  components: { Container, Title, Input, Button },
+  components: { Container, Title, Input, Button, Loader },
   data() {
     return {
+      isLoading: false,
+
       name: '',
       email: '',
       phone: '',
@@ -37,6 +43,8 @@ export default {
   },
   methods: {
     async handleSubmit() {
+      this.isLoading = true
+
       try {
         const response = await api.post('/create-person', {
           name: this.name,
@@ -53,6 +61,8 @@ export default {
           params: { personId: id },
         })
       } catch (error) {
+        alert('Something went wrong, try again please.')
+        this.isLoading = false
         throw Error(error)
       }
     },
