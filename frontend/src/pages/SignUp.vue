@@ -58,8 +58,10 @@ export default {
 
         this.$router.push({
           name: 'survey',
-          params: { personId: id },
+          params: { userId: id },
         })
+        
+        this.isLoading = false
       } catch (error) {
         alert('Something went wrong, try again please.')
         this.isLoading = false
