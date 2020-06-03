@@ -1,0 +1,12 @@
+{
+  "name": "progress-form",
+  "version": "1.0.0",
+  "repository": "https://github.com/emkis/progress-form.git",
+  "author": "<nicolasemkis@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build-frontend": "cd frontend && yarn build",
+    "build-backend": "cd backend && yarn production",
+    "heroku-postbuild": "yarn build-frontend && yarn build-backend"
+  }
+}
