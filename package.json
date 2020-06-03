@@ -4,6 +4,9 @@
   "repository": "https://github.com/emkis/progress-form.git",
   "author": "<nicolasemkis@gmail.com>",
   "license": "MIT",
+  "engines": {
+    "node": "12.16.1"
+  },
   "scripts": {
     "build-frontend": "cd frontend && yarn build",
     "build-backend": "cd backend && yarn production",
