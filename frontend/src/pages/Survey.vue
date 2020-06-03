@@ -24,7 +24,7 @@
 
     <div class="answers-container">
       <Container>
-        <transition name="slide" mode="out-in">
+        <transition name="slide" mode="out-in" appear>
           <div :key="currentQuestion">
             <SurveyButton
               v-for="alternative in ALTERNATIVES"
