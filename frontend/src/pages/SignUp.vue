@@ -60,7 +60,7 @@ export default {
           name: 'survey',
           params: { userId: id },
         })
-        
+
         this.isLoading = false
       } catch (error) {
         alert('Something went wrong, try again please.')
