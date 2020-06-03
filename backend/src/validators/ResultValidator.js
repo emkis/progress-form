@@ -6,10 +6,10 @@ export const ResultValidator = celebrate({
   }),
   [Segments.BODY]: Joi.object().keys({
     realistic: Joi.number().required(),
-    investigative: Joi.number().required(),
-    entrepreneur: Joi.number().required(),
-    conventional: Joi.number().required(),
-    artistic: Joi.number().required(),
-    social: Joi.number().required()
+    investigative: Joi.number().integer().required(),
+    entrepreneur: Joi.number().integer().required(),
+    conventional: Joi.number().integer().required(),
+    artistic: Joi.number().integer().required(),
+    social: Joi.number().integer().required()
   })
 })
