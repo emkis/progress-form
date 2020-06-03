@@ -15,16 +15,16 @@
         <ProgressBar :percentage="surveyProgress" />
       </header>
 
-      <transition name="slide" mode="out-in" appear>
+      <transition :name="transitionName" mode="out-in" appear>
         <SurveyQuestion :key="currentQuestion">
-          {{ QUESTIONS[currentQuestion - 1].question }}
+          {{ questionText }}
         </SurveyQuestion>
       </transition>
     </Container>
 
     <div class="answers-container">
       <Container>
-        <transition name="slide" mode="out-in" appear>
+        <transition :name="transitionName" mode="out-in" appear>
           <div :key="currentQuestion">
             <SurveyButton
               v-for="alternative in ALTERNATIVES"
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import api from '@/services/api'
 import { answerAlternatives, questions } from '@/utils/constants'
 import calculatePercentage from '@/utils/calculatePercentage'
 
@@ -52,6 +53,12 @@ import StepCounter from '@/components/StepCounter'
 import SurveyButton from '@/components/SurveyButton'
 import SurveyQuestion from '@/components/SurveyQuestion'
 import { IconArrowLeft } from '@/components/icons'
+
+const TRANSITIONS = {
+  SLIDE_LEFT: 'slide-left',
+  SLIDE_RIGHT: 'slide-right',
+  SLIDE_UP: 'slide-up',
+}
 
 export default {
   components: {
@@ -72,6 +79,7 @@ export default {
     return {
       currentQuestion: 1,
       previousAnswers: [],
+      transitionName: TRANSITIONS.SLIDE_LEFT,
 
       personality: {
         realistic: 0,
@@ -110,18 +118,38 @@ export default {
       this.previousAnswers.pop()
     },
     nextQuestion(pressedAnswerValue) {
+      if (this.allQuestionsAnswered) return
+
+      this.transitionName = TRANSITIONS.SLIDE_LEFT
       this.setPreviousAnswer(pressedAnswerValue)
       this.sumPersonality()
       setTimeout(() => this.setNextQuestion(), 350)
     },
     previousQuestion() {
+      this.transitionName = TRANSITIONS.SLIDE_RIGHT
       this.subtractPersonality()
       this.setPreviousQuestion()
+    },
+    async submitSurvey() {
+      try {
+        await api.post(`store-result/${this.userId}`, { ...this.personality })
+
+        setTimeout(() => this.$router.push({ name: 'thanks' }), 1000)
+      } catch (error) {
+        alert('Something went wrong, try again please.')
+        throw Error(error)
+      }
     },
   },
   computed: {
     currentPersonality() {
       return this.QUESTIONS[this.currentQuestion - 1].type
+    },
+    questionText() {
+      return (
+        this.QUESTIONS[this.currentQuestion - 1] &&
+        this.QUESTIONS[this.currentQuestion - 1].question
+      )
     },
     hasPreviousQuestion() {
       return this.currentQuestion > 1
@@ -131,6 +159,14 @@ export default {
     },
     allQuestionsAnswered() {
       return this.currentQuestion - 1 === this.TOTAL_STEPS
+    },
+  },
+  watch: {
+    currentQuestion() {
+      if (this.allQuestionsAnswered) {
+        this.transitionName = TRANSITIONS.SLIDE_UP
+        this.submitSurvey()
+      }
     },
   },
 }
@@ -143,6 +179,7 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
+  background: white;
 
   .answers-container {
     flex: 1 0 60%;
@@ -199,18 +236,40 @@ export default {
 $duration: 300ms;
 $transition: ease-out;
 
-.slide-enter-active,
-.slide-leave-active {
+.slide-left-enter-active,
+.slide-left-leave-active,
+.slide-up-enter-active,
+.slide-up-leave-active,
+.slide-right-enter-active,
+.slide-right-leave-active {
   transition: opacity $duration $transition, transform $duration $transition;
 }
 
-.slide-enter {
+.slide-left-enter {
   opacity: 0;
-  transform: translateX(10%);
+  transform: translateX(20%);
+}
+.slide-left-leave-to {
+  opacity: 0;
+  transform: translateX(-20%);
 }
 
-.slide-leave-to {
+.slide-right-enter {
   opacity: 0;
-  transform: translateX(-30%);
+  transform: translateX(-20%);
+}
+.slide-right-leave-to {
+  opacity: 0;
+  transform: translateX(20%);
+}
+
+.slide-up-enter {
+  opacity: 0;
+  transform: translateY(10%);
+}
+
+.slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(-20%);
 }
 </style>
