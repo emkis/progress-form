@@ -9,6 +9,6 @@
   },
   "scripts": {
     "heroku-prebuild": "cd backend && npm install",
-    "start": "cd api && npm run production"
+    "start": "cd backend && npm run production"
   }
 }
