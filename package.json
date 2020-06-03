@@ -10,6 +10,6 @@
   "scripts": {
     "install-backend": "cd backend && npm install",
     "build-backend": "cd backend && npm run build && npm run start",
-    "heroku-postbuild": "npm run install-backend && npm run build-backend"
+    "heroku-prebuild": "npm run install-backend && npm run build-backend"
   }
 }
