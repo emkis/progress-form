@@ -71,7 +71,7 @@ export default {
   data() {
     return {
       currentQuestion: 1,
-      previousAnswerValue: null,
+      previousAnswers: [],
 
       personality: {
         realistic: 0,
@@ -85,8 +85,7 @@ export default {
   },
   created() {
     this.ALTERNATIVES = Object.freeze([...answerAlternatives])
-
-    this.QUESTIONS = [...questions]
+    this.QUESTIONS = Object.freeze([...questions])
     this.TOTAL_STEPS = this.QUESTIONS.length
   },
   methods: {
@@ -97,13 +96,18 @@ export default {
       this.currentQuestion = this.currentQuestion - 1
     },
     setPreviousAnswer(pressedAnswerValue) {
-      this.previousAnswerValue = pressedAnswerValue
+      this.previousAnswers.push(pressedAnswerValue)
     },
     sumPersonality() {
-      this.personality[this.currentPersonality] += this.previousAnswerValue
+      this.personality[this.currentPersonality] += this.previousAnswers[
+        this.currentQuestion - 1
+      ]
     },
     subtractPersonality() {
-      this.personality[this.currentPersonality] -= this.previousAnswerValue
+      this.personality[this.currentPersonality] -= this.previousAnswers[
+        this.currentQuestion - 2
+      ]
+      this.previousAnswers.pop()
     },
     nextQuestion(pressedAnswerValue) {
       this.setPreviousAnswer(pressedAnswerValue)
@@ -159,7 +163,6 @@ export default {
     button {
       border: 0;
       padding: 0;
-      box-shadow: none;
       background: transparent;
       display: flex;
       align-items: center;
