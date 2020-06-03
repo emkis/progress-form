@@ -8,7 +8,6 @@
     "node": "12.16.1"
   },
   "scripts": {
-    "heroku-prebuild": "cd backend && npm install",
-    "start": "cd backend && npm run production"
+    "heroku-prebuild": "cd backend && npm install"
   }
 }
