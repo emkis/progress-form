@@ -8,7 +8,7 @@
     "node": "12.16.1"
   },
   "scripts": {
-    "heroku-prebuild": "cd backend && yarn",
-    "start": "cd api && yarn production"
+    "heroku-prebuild": "cd backend && npm install",
+    "start": "cd api && npm run production"
   }
 }
