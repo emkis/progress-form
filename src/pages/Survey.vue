@@ -132,7 +132,7 @@ export default {
     },
     async submitSurvey() {
       try {
-        await api.post(`store-result/${this.userId}`, { ...this.personality })
+        await api.post('store-result', { id: this.userId, ...this.personality })
 
         setTimeout(() => this.$router.push({ name: 'Thanks' }), 1000)
       } catch (error) {
