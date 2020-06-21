@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "mock-server": "json-server mock/database.json --routes mock/routes.json -p 3333 -d 200",
+    "mock-server": "node mock/server.js",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
