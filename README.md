@@ -1,24 +1,15 @@
-# app
+<h1 align="center">
+    <img alt="original shot on dribble" src="https://github.com/emkis/personality-survey/blob/master/.github/original-shot.gif?raw=true" />
+</h1>
 
-## Project setup
-```
-yarn install
-```
+# :page_with_curl: about
+this was a project that i did as a challenge, just to test myself and see how i performed while building this ui
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+you can click **[here](https://dribbble.com/shots/7176827-Survey-knowledge-checking-app)** to see the original shot on dribble :sparkles:
 
-### Compiles and minifies for production
-```
-yarn build
-```
+# :hammer: how it was built
+this project was developed with the following technologies:
 
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- [Vue.js](http://vuejs.org)
+- [Vue Router](https://router.vuejs.org)
+- SCSS (for handle all styles build it from the ground up)
