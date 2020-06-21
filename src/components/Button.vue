@@ -5,8 +5,6 @@
 </template>
 
 <style lang="scss" scoped>
-@import '@/styles/constants/index.scss';
-
 .button {
   width: 100%;
   display: block;

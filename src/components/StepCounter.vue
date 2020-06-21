@@ -24,8 +24,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/constants/index.scss';
-
 .step-counter {
   user-select: none;
 

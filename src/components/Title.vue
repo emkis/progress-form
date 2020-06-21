@@ -5,8 +5,6 @@
 </template>
 
 <style lang="scss" scoped>
-@import '@/styles/constants/index.scss';
-
 .title {
   font-size: rem(40px);
   line-height: 1.25;

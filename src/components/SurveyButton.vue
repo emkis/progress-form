@@ -5,7 +5,7 @@
     v-on="$listeners"
     @click="pressed = true"
   >
-    <span class="survey-button__option"><slot name="option"/></span>
+    <span class="survey-button__option"><slot name="option" /></span>
     <slot name="answer" />
   </button>
 </template>
@@ -21,8 +21,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/constants/index.scss';
-
 .survey-button {
   position: relative;
   display: block;

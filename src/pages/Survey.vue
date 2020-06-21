@@ -173,8 +173,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/constants/index.scss';
-
 .survey {
   height: 100%;
   display: flex;

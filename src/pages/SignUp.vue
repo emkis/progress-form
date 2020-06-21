@@ -73,8 +73,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/constants/index.scss';
-
 main {
   background: $color_primary;
   padding: rem(60px 0 80px);

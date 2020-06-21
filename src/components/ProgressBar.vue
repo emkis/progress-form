@@ -21,8 +21,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/constants/index.scss';
-
 .progress-bar {
   overflow: hidden;
 

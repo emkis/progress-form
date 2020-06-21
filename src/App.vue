@@ -15,8 +15,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/constants/index.scss';
-
 #app::before {
   position: fixed;
   content: '';

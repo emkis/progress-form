@@ -5,8 +5,6 @@
 </template>
 
 <style lang="scss" scoped>
-@import '@/styles/constants/index.scss';
-
 .survey-question {
   font-size: rem(26px);
   line-height: 1.5;
