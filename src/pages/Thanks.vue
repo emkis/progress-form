@@ -16,7 +16,7 @@ export default {
   components: { Container, Title, Button },
   methods: {
     backToInitial() {
-      this.$router.push({ name: 'sign-up' })
+      this.$router.push({ name: 'SignUp' })
     },
   },
 }

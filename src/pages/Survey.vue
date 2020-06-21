@@ -134,7 +134,7 @@ export default {
       try {
         await api.post(`store-result/${this.userId}`, { ...this.personality })
 
-        setTimeout(() => this.$router.push({ name: 'thanks' }), 1000)
+        setTimeout(() => this.$router.push({ name: 'Thanks' }), 1000)
       } catch (error) {
         alert('Something went wrong, try again please.')
         throw Error(error)

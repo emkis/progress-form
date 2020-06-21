@@ -57,7 +57,7 @@ export default {
         const { id } = response.data
 
         this.$router.push({
-          name: 'survey',
+          name: 'Survey',
           params: { userId: id },
         })
 

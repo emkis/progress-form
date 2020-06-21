@@ -10,23 +10,23 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'sign-up',
+    name: 'SignUp',
     component: SignUp,
   },
   {
     path: '/survey/:userId',
-    name: 'survey',
+    name: 'Survey',
     component: Survey,
     props: true,
   },
   {
     path: '/thanks',
-    name: 'thanks',
+    name: 'Thanks',
     component: Thanks,
   },
   {
     path: '*',
-    redirect: { name: 'sign-up' },
+    redirect: { name: 'SignUp' },
   },
 ]
 
