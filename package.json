@@ -2,7 +2,7 @@
   "name": "progress-form",
   "version": "0.1.0",
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "start": "vue-cli-service serve",
     "mock-server": "node mock/server.js",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
@@ -15,9 +15,9 @@
     "vue-router": "^3.3.4"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.4.4",
-    "@vue/cli-plugin-eslint": "~4.4.4",
-    "@vue/cli-service": "~4.4.4",
+    "@vue/cli-plugin-babel": "~4.4.6",
+    "@vue/cli-plugin-eslint": "~4.4.6",
+    "@vue/cli-service": "~4.4.6",
     "@vue/eslint-config-prettier": "^6.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.3.0",
@@ -25,8 +25,8 @@
     "eslint-plugin-vue": "^6.2.2",
     "json-server": "^0.16.1",
     "prettier": "^2.0.5",
-    "sass": "^1.26.8",
-    "sass-loader": "^8.0.2",
+    "sass": "^1.26.10",
+    "sass-loader": "^9.0.2",
     "sass-rem": "^2.0.1",
     "vue-template-compiler": "^2.6.11"
   }
