@@ -32,7 +32,7 @@ $ cd personality-survey
 $ npm install
 
 # run the app in development mode
-$ npm run serve
+$ npm run start
 ```
 
 # :memo: license
@@ -40,4 +40,4 @@ this project is under the **MIT license**, you can see the **[license](https://g
 
 ---
 
-:v: **[say hello](https://www.linkedin.com/in/nicolas-jardim)** to me on linkedin or send me and **[email](mailto:nicolasemkis@gmail.com)** :mailbox:	
+:v: **[say hello](https://www.linkedin.com/in/nicolas-jardim)** to me on linkedin or send me and **[email](mailto:nicolasemkis@gmail.com)** :mailbox:
